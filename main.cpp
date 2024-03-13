@@ -1,157 +1,152 @@
 #include <iostream>
 #include <string>
-#include <vector>
+#include <algorithm>
 using namespace std;
 
 
 struct Node {
 	int data;
-	int height;
-	Node* parent;
 	Node* left;
 	Node* right;
+	int height;
 
-	Node(int data) {
-		this->data = data;
-		this->height = 1;
-		this->parent = nullptr;
-		this->left = nullptr;
-		this->right = nullptr;
-	}
+	Node(int data) : data(data), left(nullptr), right(nullptr), height(1) {}
+};
+
+
 
 	int getHeight(Node* node) {
 		if (node == nullptr) return 0;
-		return this->height;
+		return node->height;
 	}
 
-	int getBalance(Node* node) {
-		if (node == nullptr) {
-			return 0;
-		}
+	int max(int x, int y) {
+		return (x > y) ? x : y;
+	}
+
+	int getBlanceFactor(Node* node) {
+		if (node == nullptr) return 0;
 		return getHeight(node->left) - getHeight(node->right);
 	}
 
-};
+	Node* rightRotate(Node* up) {
+		Node* z = up;
+		Node* y = z->left;
+		Node* T3 = y->right;
 
+		// Perform Rotation
+		y->right = z;
+		z->left = T3;
 
+		// Update heights
+		y->height = max(getHeight(y->left), getHeight (y->right));
+		z->height = max(getHeight(z->left), getHeight(z->right));
 
-
-
-
-
-
-struct AVL {
-	Node* root;
-	int size;
-
-	Node* subtreeFirst(Node* node) {
-		Node* tmp = node;
-			do tmp = tmp->left;
-			while (tmp->left != nullptr);
-			return tmp;
+		// Return new tree root
+		return y;
 	}
 
-	Node* successor(Node* node) {
-		if (node->right == nullptr) {
-			return nullptr;
-		}
+	Node* leftRotate(Node* up) {
+		Node* y = up;
+		Node* z = y->right;
+		Node* T3 = z->left;
 
-		if (node->right != nullptr) {
-			return subtreeFirst(node->right);
-		}
+		// Perform rotation
+		z->left = y;
+		y->right = T3;
 
-		Node* parent = node->parent;
-		while (node->parent != nullptr && node == parent->right) {
-			node = parent;
-			parent = parent->parent;
-		}
-		return parent;
+		// Update heights
+
+		y->height = max(getHeight(y->left), getHeight(y->right));
+		z->height = max(getHeight(z->left), getHeight(z->right));
+
+		// Return new root;
+
+		return z;
 	}
 
-	void insert(Node* root, int data) {
-		Node* newElement = new Node(data);
-		if (!root) {
-			root = newElement;
-			return;
-		}
-		Node* tmp = root;
-		Node* prev = nullptr;
+	Node* insert(Node* root, int data) {
+		if (root == nullptr) return new Node(data);
 
-		while (tmp) { // tmp != nullptr ( sawp with this just in case!)
-			if (tmp->data > data) {
-				prev = tmp;
-				tmp = tmp->left;
-			}
-			else if (tmp->data < data) {
-				prev = tmp;
-				tmp = tmp->right;
-			}
+		if (data < root->data) {
+			root->left = insert(root->left, data);
 		}
-		if (prev->data < data) {
-			prev->right = newElement;
+
+		else if (data > root->data) {
+			root->right = insert(root->right, data);
 		}
-		else
-			prev->left = newElement;
+
+		else return root;
+
+		// Update height 
+
+		root->height = 1 + max(getHeight(root->right), getHeight(root->left));
+
+		// Get balance factor
+
+		int balance = getBlanceFactor(root);
+
+		// LL
+		if (balance > 1 && data < root->left->data) {
+			return rightRotate(root);
+		}
+		// RR
+		if (balance < 1 && data > root->right->data) {
+			return leftRotate(root);
+		}
+		// LR
+		if (balance > 1 && data > root->left->data) {
+			root->left = leftRotate(root->left);
+			return rightRotate(root);
+		}
+		// RL
+		if (balance < 1 && data < root->right->data) {
+			root->right = rightRotate(root->right);
+			return leftRotate(root);
+		}
+		return root;
 	}
 
-	void inorder(Node* root)
+	void preOrder(Node* root)
 	{
-		if (root != NULL) {
-			inorder(root->left);
-			cout << (root->data);
-			inorder(root->right);
+		if (root != NULL)
+		{
+			cout << root->data << " ";
+			preOrder(root->left);
+			preOrder(root->right);
 		}
 	}
 
-/* We need this Node* cause it represents the subtree Root
-	that way we recursivly search below*/
-
-/* We return Node* in order ____*/
-	Node* deleteNode (Node* root, int key) {
-		// Base case
-		if (root == nullptr) return;
-
-		if (root->data > key) {
-			root->left = deleteNode(root->left, key);
-			return root;
-		}
-
+	Node* deleteNode(Node* node, int data) {
 
 	}
+	
 
 
-};
+	// Driver Code 
+	int main()
+	{
+		Node* root = NULL;
 
+		/* Constructing tree given in
+		the above figure */
+		root = insert(root, 10);
+		root = insert(root, 20);
+		root = insert(root, 30);
+		root = insert(root, 40);
+		root = insert(root, 50);
+		root = insert(root, 25);
 
+		/* The constructed AVL Tree would be
+					30
+				/ \
+				20 40
+				/ \ \
+			10 25 50
+		*/
+		cout << "Preorder traversal of the "
+			"constructed AVL tree is \n";
+		preOrder(root);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-int main() {
-
-
-
-	return 0;
-}
+		return 0;
+	}
