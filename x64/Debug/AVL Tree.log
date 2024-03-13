@@ -1,0 +1,4 @@
+﻿  main.cpp
+  solution.cpp
+  Kod Üretiliyor...
+C:\Users\hmert\source\repos\AVL Tree\AVL Tree\solution.cpp(180,4): error C2143: sözdizimi hatası: ';' eksik ('delete' öncesinde)
