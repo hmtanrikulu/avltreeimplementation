@@ -1,0 +1,25 @@
+﻿  main.cpp
+C:\Users\hmert\source\repos\yasin\yasin\AVLTree.cpp(17,22): warning C4390: ';': empty controlled statement found; is this the intent?
+  (compiling source file 'main.cpp')
+  C:\Users\hmert\source\repos\yasin\yasin\AVLTree.cpp(17,22):
+  the template instantiation context (the oldest one first) is
+  	C:\Users\hmert\source\repos\yasin\yasin\main.cpp(4,15):
+  	see reference to class template instantiation 'AVLTree<int>' being compiled
+  	C:\Users\hmert\source\repos\yasin\yasin\AVLTree.cpp(74,34):
+  	while compiling class template member function 'void AVLTree<int>::insert(T)'
+          with
+          [
+              T=int
+          ]
+  		C:\Users\hmert\source\repos\yasin\yasin\main.cpp(5,13):
+  		see the first reference to 'AVLTree<int>::insert' in 'main'
+  	C:\Users\hmert\source\repos\yasin\yasin\AVLTree.cpp(16,43):
+  	while compiling class template member function 'int AVLTree<int>::getBalance(Node<T> *)'
+          with
+          [
+              T=int
+          ]
+  
+C:\Users\hmert\source\repos\yasin\yasin\AVLTree.cpp(34): warning C4715: 'AVLTree<int>::successor': not all control paths return a value
+C:\Users\hmert\source\repos\yasin\yasin\AVLTree.cpp(27): warning C4715: 'AVLTree<int>::firstOfSubtree': not all control paths return a value
+  yasin.vcxproj -> C:\Users\hmert\source\repos\yasin\x64\Debug\yasin.exe
