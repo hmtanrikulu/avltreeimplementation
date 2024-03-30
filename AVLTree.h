@@ -22,7 +22,7 @@ private:
 	Node<T>* leftRotate(Node<T>*);
 	Node<T>* rightRotate(Node<T>*);
 	Node<T>* innerDeleteNode(Node<T>*, T);
-
+	// test
 };
 #include "AVLTree.cpp"
 #endif
